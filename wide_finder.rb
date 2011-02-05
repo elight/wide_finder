@@ -1,10 +1,10 @@
 class WideFinder
-  def initialize(filename)
+  def initialize(filename, &url_finder)
     url_histogram = Hash.new(0)
     File.open(filename, "r") do |handle|
       while line = handle.gets
-        line =~ /"([A-Z]+)\s([^\s\?]+)/
-        url_histogram[$2] += 1
+        url = url_finder.call(line)
+        url_histogram[url] += 1
       end
     end
     @results = url_histogram.sort { |a, b| a[1] <=> b[1] }.reverse
