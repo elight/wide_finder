@@ -7,12 +7,13 @@ class WideFinderTest < MiniTest::Unit::TestCase
   # Setup the TweetCatcher instance and some cheap mock values against which to test.
   def setup
     @filename = 'raw_data.log'
+    @num_times = 10
   end
 
   def run_wide_finder(mode, &url_finder)
-    Benchmark.bmbm do |b|
+    Benchmark.bm do |b|
       b.report(mode) do |b|
-        10.times do
+        @num_times.times do 
           sample = WideFinder.new(@filename, &url_finder)
           expected = [
             "11101: /search/image_set/20", 
@@ -35,8 +36,7 @@ class WideFinderTest < MiniTest::Unit::TestCase
 
   def test_that_it_finds_the_top_three_hits_using_regex
     run_wide_finder "regex" do |line|
-      line =~ /"([A-Z]+)\s([^\s\?]+)/
-      url = $2
+      $2 if line =~ /"([A-Z]+)\s([^\s\?]+)/
     end
   end
 end

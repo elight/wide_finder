@@ -4,7 +4,7 @@ class WideFinder
     File.open(filename, "r") do |handle|
       while line = handle.gets
         url = url_finder.call(line)
-        url_histogram[url] += 1
+        url_histogram[url] += 1 if url
       end
     end
     @results = url_histogram.sort { |a, b| a[1] <=> b[1] }.reverse
