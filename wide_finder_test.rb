@@ -28,9 +28,8 @@ class WideFinderTest < MiniTest::Unit::TestCase
   
   def test_that_it_finds_the_top_three_hits_using_split
     run_wide_finder "double split" do |line|
-      url = line.split(" ")[6]
-      url = url.split("?")[0] if url.include?("?")  
-      url
+      line = line.split("?")[0] if line.include?("?")  
+      line.split(" ")[6]
     end
   end
 
