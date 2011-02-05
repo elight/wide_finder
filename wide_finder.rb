@@ -5,13 +5,9 @@ class WideFinder
     lines = handle.readlines
     handle.close
     url_histogram = lines.inject(Hash.new(0)) do |hash, line|
-      line =~ /"([A-Z]+)\s(.+)/
+      line =~ /"([A-Z]+)\s([^\s\?]+)/
       url = $2
-      if url.nil? || url == "" || url =~ /^\s+$/
-      else 
-        url = url.gsub(/\?.+$/, "").gsub(/\sHTTP.+/,"")
-        hash[url] += 1
-      end
+      hash[url] += 1
       hash
     end
     unformatted_results = Array(url_histogram).sort! { |a, b| a[1] <=> b[1] }.reverse
