@@ -1,14 +1,13 @@
 class WideFinder
   def initialize(filename)
     url_histogram = nil
-    handle = File.open(filename, "r")
-    lines = handle.readlines
-    handle.close
-    url_histogram = lines.inject(Hash.new(0)) do |hash, line|
-      line =~ /"([A-Z]+)\s([^\s\?]+)/
-      url = $2
-      hash[url] += 1
-      hash
+    File.open(filename, "r") do |handle|
+      while line = handle.gets
+        line =~ /"([A-Z]+)\s([^\s\?]+)/
+        url = $2
+        hash[url] += 1
+        hash
+      end
     end
     unformatted_results = Array(url_histogram).sort! { |a, b| a[1] <=> b[1] }.reverse
     @results = unformatted_results.inject([]) do |results, result| 
